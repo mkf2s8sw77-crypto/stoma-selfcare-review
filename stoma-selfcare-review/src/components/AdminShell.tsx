@@ -35,12 +35,16 @@ export function AdminShell({
   const [nurse, setNurse] = useState('陈素清');
 
   useEffect(() => {
-    setNurse(localStorage.getItem('demo_nurse') ?? '陈素清');
+    const stored = localStorage.getItem('demo_nurse') ?? '陈素清';
+    setNurse(stored);
+    // 同步到 Cookie，供服务端 API（如导出审计）读取当前演示身份
+    document.cookie = `demo_nurse=${encodeURIComponent(stored)}; path=/; max-age=31536000; samesite=lax`;
   }, []);
 
   function pickNurse(name: string) {
     setNurse(name);
     localStorage.setItem('demo_nurse', name);
+    document.cookie = `demo_nurse=${encodeURIComponent(name)}; path=/; max-age=31536000; samesite=lax`;
     router.refresh();
   }
 

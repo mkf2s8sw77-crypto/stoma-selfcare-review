@@ -16,6 +16,33 @@ import { z } from 'zod';
 import type { CarePointDef } from '@/lib/points';
 import { seed } from '@/db/seed';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+
+/** 演示身份 Cookie 名（患者端切换器写入，服务端页面读取） */
+export const DEMO_PATIENT_COOKIE = 'demo_patient_id';
+export const DEMO_NURSE_COOKIE = 'demo_nurse';
+
+/**
+ * 读取当前演示患者身份：
+ * 患者端切换器把所选患者写入 Cookie + localStorage，服务端页面据此取数；
+ * Cookie 缺失或指向已不存在的患者（如刚恢复演示数据）时，回落到首位患者。
+ */
+export async function getCurrentDemoPatient(): Promise<PatientView | null> {
+  const list = getPatients();
+  if (list.length === 0) return null;
+  const store = await cookies();
+  const id = Number(store.get(DEMO_PATIENT_COOKIE)?.value ?? 0);
+  return list.find((p) => p.id === id) ?? list[0];
+}
+
+/** 读取当前演示护士身份（用于审计 actor），无效时回落陈素清 */
+export async function getCurrentDemoNurse(): Promise<string> {
+  const store = await cookies();
+  const value = (store.get(DEMO_NURSE_COOKIE)?.value ?? '').trim();
+  if (!value) return '陈素清';
+  const nurses = getNurses();
+  return nurses.some((n) => n.displayName === value) ? value : '陈素清';
+}
 
 export interface RecordItemView {
   id: number;

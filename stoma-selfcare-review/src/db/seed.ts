@@ -58,6 +58,8 @@ export function resetDatabase(): void {
     'app_meta',
   ];
   for (const t of tables) raw.exec(`DELETE FROM ${t};`);
+  // 重置自增序列，保证每次「恢复演示数据」后患者编号稳定从 1 开始
+  raw.exec(`DELETE FROM sqlite_sequence WHERE name IN (${tables.map((t) => `'${t}'`).join(', ')});`);
 }
 
 export function seed(): void {

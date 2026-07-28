@@ -1,17 +1,23 @@
 import { MobileShell } from '@/components/MobileShell';
-import { getPatients, getActivePoints, getVersion } from '@/lib/server';
+import { MobilePatientSwitcher } from '@/components/MobilePatientSwitcher';
+import { getPatients, getCurrentDemoPatient, getActivePoints, getVersion } from '@/lib/server';
 import { UserRound, Stethoscope, CalendarDays, History } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-export default function MobileProfile() {
+export default async function MobileProfile() {
   const patients = getPatients();
-  const p = patients[0];
+  const p = (await getCurrentDemoPatient()) ?? patients[0];
+  if (!p) return null;
   const points = getActivePoints();
   const active = points.length > 0 ? getVersion(points[0].versionId) : null;
 
   return (
-    <MobileShell title="我的" subtitle="脱敏档案与当前激活要点版本">
+    <MobileShell
+      title="我的"
+      subtitle="脱敏档案与当前激活要点版本"
+      rightSlot={<MobilePatientSwitcher patients={patients.map((x) => ({ id: x.id, name: x.name, code: x.code }))} />}
+    >
       <div className="card flex items-center gap-4 p-5">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
           <UserRound className="h-6 w-6" />

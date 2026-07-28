@@ -55,7 +55,7 @@ export default async function AdminPatientDetail({
             </dl>
           </div>
           <div className="card p-5">
-            <div className="section-title">8 项要点执行进度</div>
+            <div className="section-title">{points.length} 项要点执行进度</div>
             <p className="mt-1 text-xs text-ink-400">综合最近 5 次记录</p>
             <ul className="mt-3 space-y-2">
               {points.map((p) => {

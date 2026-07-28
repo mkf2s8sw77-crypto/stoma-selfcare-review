@@ -2,15 +2,16 @@ import Link from 'next/link';
 import { MobileShell } from '@/components/MobileShell';
 import { MobilePatientSwitcher } from '@/components/MobilePatientSwitcher';
 import { StatusBadge } from '@/components/StatusBadge';
-import { getPatients, getPatientRecords } from '@/lib/server';
+import { getPatients, getCurrentDemoPatient, getPatientRecords } from '@/lib/server';
 import { formatDateTime, relativeTime } from '@/lib/utils';
 import { ChevronRight, Filter } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-export default function MobileRecordsPage() {
+export default async function MobileRecordsPage() {
   const patients = getPatients();
-  const patient = patients[0];
+  const patient = (await getCurrentDemoPatient()) ?? patients[0];
+  if (!patient) return null;
   const records = getPatientRecords(patient.id);
 
   const ok = records.filter((r) => r.status === '已确认').length;

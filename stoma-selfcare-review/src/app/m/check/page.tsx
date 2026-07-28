@@ -45,7 +45,7 @@ export default function MobileCheckPage() {
 
   const total = points.length;
   const current = points[step];
-  const allAnswered = points.every((p) => exec[p.id]);
+  const allAnswered = total > 0 && points.every((p) => exec[p.id]);
 
   async function submit() {
     if (!patientId) return;
@@ -143,7 +143,7 @@ export default function MobileCheckPage() {
   return (
     <MobileShell
       title="自护打卡"
-      subtitle="按 8 项要点依次回顾今日执行情况"
+      subtitle={`按 ${total} 项要点依次回顾今日执行情况`}
       rightSlot={<MobilePatientSwitcher patients={patients} />}
     >
       <div className="mb-3 flex items-center gap-1.5 text-xs text-ink-400">

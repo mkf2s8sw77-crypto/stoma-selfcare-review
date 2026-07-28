@@ -1,17 +1,17 @@
 import { MobileShell } from '@/components/MobileShell';
 import { MobilePatientSwitcher } from '@/components/MobilePatientSwitcher';
-import { getPatients, getPatient, getActivePoints, getRecentRecords } from '@/lib/server';
+import { getPatients, getCurrentDemoPatient, getActivePoints, getRecentRecords } from '@/lib/server';
 import Link from 'next/link';
-import { formatDateTime, relativeTime } from '@/lib/utils';
+import { relativeTime } from '@/lib/utils';
 import { StatusBadge } from '@/components/StatusBadge';
-import { ClipboardList, Sparkles, ArrowRight, CalendarDays } from 'lucide-react';
+import { Sparkles, ArrowRight, CalendarDays } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-export default function MobileHome() {
+export default async function MobileHome() {
   const patients = getPatients();
-  const defaultPatient = patients[0];
-  const patient = defaultPatient;
+  const patient = (await getCurrentDemoPatient()) ?? patients[0];
+  if (!patient) return null;
   const records = getRecentRecords(patient.id, 5);
   const points = getActivePoints();
 

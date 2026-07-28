@@ -4,19 +4,32 @@ import { useRouter } from 'next/navigation';
 import { ChevronDown, UserRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+const STORAGE_KEY = 'demo_patient_id';
+const COOKIE_KEY = 'demo_patient_id';
+
+/** 同步写入 localStorage 与 Cookie：服务端页面依赖 Cookie 读取当前演示身份 */
+function persist(pid: number) {
+  localStorage.setItem(STORAGE_KEY, String(pid));
+  document.cookie = `${COOKIE_KEY}=${pid}; path=/; max-age=31536000; samesite=lax`;
+}
+
 export function MobilePatientSwitcher({ patients }: { patients: { id: number; name: string; code: string }[] }) {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState<number | null>(null);
   const router = useRouter();
   useEffect(() => {
-    const v = Number(localStorage.getItem('demo_patient_id') ?? 0);
-    setId(v || patients[0]?.id || null);
-    if (!v && patients[0]) localStorage.setItem('demo_patient_id', String(patients[0].id));
+    const stored = Number(localStorage.getItem(STORAGE_KEY) ?? 0);
+    // 已存身份有效则沿用；无效（如恢复演示数据后旧 id 已不存在）时回落到首位患者并修复本地状态
+    const valid = patients.find((p) => p.id === stored);
+    const target = valid ?? patients[0];
+    if (!target) return;
+    setId(target.id);
+    persist(target.id);
   }, [patients]);
   const current = patients.find((p) => p.id === id);
   function pick(pid: number) {
     setId(pid);
-    localStorage.setItem('demo_patient_id', String(pid));
+    persist(pid);
     setOpen(false);
     router.refresh();
   }

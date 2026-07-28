@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { buildExportRows } from '@/lib/server';
+import { buildExportRows, getCurrentDemoNurse } from '@/lib/server';
 import { db } from '@/db';
 import { auditLogs } from '@/db/schema';
 import path from 'node:path';
@@ -40,7 +40,7 @@ export async function GET(req: Request) {
   const filePath = path.join(dir, filename);
   fs.writeFileSync(filePath, csv, 'utf-8');
   db.insert(auditLogs).values({
-    actor: '陈素清', action: 'EXPORT_CSV', targetType: 'export', targetId: filename,
+    actor: await getCurrentDemoNurse(), action: 'EXPORT_CSV', targetType: 'export', targetId: filename,
     meta: JSON.stringify({ rows: rows.length, range }),
     createdAt: new Date().toISOString(),
   }).run();

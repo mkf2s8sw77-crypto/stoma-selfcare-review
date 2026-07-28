@@ -59,7 +59,12 @@ export default function AdminPoints() {
   async function activate() {
     if (!activeId) return;
     setBusy(true);
-    await fetch(`${BASE_PATH}/api/point-versions/${activeId}`, { method: 'POST' });
+    const actor = localStorage.getItem('demo_nurse') ?? undefined;
+    await fetch(`${BASE_PATH}/api/point-versions/${activeId}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ actor }),
+    });
     await load();
     setBusy(false);
   }
