@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-page: #F6F7F4;
+  --bg-card: #FFFFFF;
+  --brand-50: #F2F6F2;
+  --brand-500: #1E4B2C;
+  --brand-600: #173E24;
+  --gold-400: #CEB268;
+  --gold-500: #B6954A;
+  --ink-700: #1F2A24;
+  --ink-500: #3F473D;
+  --ink-400: #6A7368;
+  --ok-500: #2F8F5D;
+  --warn-500: #D2913A;
+  --danger-500: #C84A3A;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg-page);
+  color: var(--ink-700);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Heiti SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-feature-settings: "tnum";
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6;
+  }
+  .container-mobile {
+    @apply mx-auto w-full max-w-md px-4;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-brand-200 bg-white px-4 py-2.5 text-sm font-medium text-brand-600 transition hover:bg-brand-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-500 transition hover:bg-brand-50 hover:text-brand-600;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-gold-300 bg-gold-50 px-3 py-1.5 text-sm font-medium text-gold-600 transition hover:bg-gold-100;
+  }
+  .card {
+    @apply rounded-2xl border border-brand-100 bg-white shadow-card;
+  }
+  .card-flat {
+    @apply rounded-2xl border border-brand-100 bg-white;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-600;
+  }
+  .badge-gold {
+    @apply inline-flex items-center gap-1 rounded-full bg-gold-50 px-2 py-0.5 text-xs font-medium text-gold-600;
+  }
+  .badge-ink {
+    @apply inline-flex items-center gap-1 rounded-full bg-ink-50 px-2 py-0.5 text-xs font-medium text-ink-500;
+  }
+  .badge-ok { @apply inline-flex items-center gap-1 rounded-full bg-[#E2F2EA] px-2 py-0.5 text-xs font-medium text-ok-500; }
+  .badge-warn { @apply inline-flex items-center gap-1 rounded-full bg-[#FAF1E0] px-2 py-0.5 text-xs font-medium text-warn-500; }
+  .badge-danger { @apply inline-flex items-center gap-1 rounded-full bg-[#FBE5E1] px-2 py-0.5 text-xs font-medium text-danger-500; }
+  .badge-muted { @apply inline-flex items-center gap-1 rounded-full bg-ink-50 px-2 py-0.5 text-xs font-medium text-ink-400; }
+
+  .field-label {
+    @apply mb-1.5 block text-xs font-medium text-ink-500;
+  }
+  .field {
+    @apply w-full rounded-lg border border-brand-100 bg-white px-3 py-2.5 text-sm text-ink-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200;
+  }
+  .field-area {
+    @apply w-full rounded-lg border border-brand-100 bg-white px-3 py-2.5 text-sm leading-6 text-ink-700 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-200;
+  }
+
+  .stat-card {
+    @apply rounded-2xl border border-brand-100 bg-white p-5 shadow-card;
+  }
+  .stat-value {
+    @apply text-2xl font-semibold text-brand-600;
+  }
+  .stat-label {
+    @apply text-xs font-medium text-ink-400;
+  }
+
+  .safety-banner {
+    @apply rounded-2xl border border-gold-200 bg-gold-50 px-4 py-3 text-sm leading-6 text-gold-600;
+  }
+
+  .section-title {
+    @apply text-sm font-semibold tracking-wide text-brand-600;
+  }
+
+  .divider {
+    @apply h-px w-full bg-brand-100;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-ink-500 transition hover:bg-brand-50 hover:text-brand-600;
+  }
+  .nav-item-active {
+    @apply bg-brand-50 font-medium text-brand-600;
+  }
+}
+
+::placeholder { color: #9aa097; }
+
+input[type="radio"], input[type="checkbox"] { accent-color: #1E4B2C; }
